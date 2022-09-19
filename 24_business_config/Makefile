@@ -1,0 +1,57 @@
+
+CROSS_COMPILE ?= 
+AS		= $(CROSS_COMPILE)as
+LD		= $(CROSS_COMPILE)ld
+CC		= $(CROSS_COMPILE)gcc
+CPP		= $(CC) -E
+AR		= $(CROSS_COMPILE)ar
+NM		= $(CROSS_COMPILE)nm
+
+STRIP		= $(CROSS_COMPILE)strip
+OBJCOPY		= $(CROSS_COMPILE)objcopy
+OBJDUMP		= $(CROSS_COMPILE)objdump
+
+export AS LD CC CPP AR NM
+export STRIP OBJCOPY OBJDUMP
+
+CFLAGS := -Wall -O2 -g
+CFLAGS += -I $(shell pwd)/include
+CFLAGS += -I $(PWD)/tslib-1.21/tmp/include
+CFLAGS += -L $(PWD)/tslib-1.21/tmp/lib
+CFLAGS += -I $(PWD)/freetype-2.10.2/tmp/include/freetype2
+
+LDFLAGS := -lts  -L $(PWD)/tslib-1.21/tmp/lib -lpthread -lfreetype
+
+export CFLAGS LDFLAGS
+
+TOPDIR := $(shell pwd)
+export TOPDIR
+
+TARGET := test
+
+
+obj-y += display/
+obj-y += input/
+obj-y += font/
+obj-y += ui/
+obj-y += page/
+obj-y += unittest/
+
+all : start_recursive_build $(TARGET)
+	@echo $(TARGET) has been built!
+
+start_recursive_build:
+	make -C ./ -f $(TOPDIR)/Makefile.build
+
+$(TARGET) : built-in.o
+	$(CC) -o $(TARGET) built-in.o $(LDFLAGS)
+
+clean:
+	rm -f $(shell find -name "*.o")
+	rm -f $(TARGET)
+
+distclean:
+	rm -f $(shell find -name "*.o")
+	rm -f $(shell find -name "*.d")
+	rm -f $(TARGET)
+	

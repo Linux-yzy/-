@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "disp_manager.h": "c",
+        "input_manager.h": "c",
+        "font_manager.h": "c",
+        "ui.h": "c",
+        "page_manager.h": "c",
+        "common.h": "c"
+    }
+}
