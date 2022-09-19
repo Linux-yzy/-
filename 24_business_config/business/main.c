@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		printf("Usage: %s <font_file>\n", argv[0]);
+		printf("Usage: %s <font_file>\n", argv[0]);  //没有添加 \n, 打印都在缓存中
 		return -1;
 	}
 
